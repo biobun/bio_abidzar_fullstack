@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,12 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
+})->name('guest.home');
+Route::get('/list-article', [PublicController::class, 'all'])->name('guest.article.all');
+Route::get('/list-article/{article}', [PublicController::class, 'show'])->name('guest.article.show');
 Route::middleware(['auth'])->group(function(){
     Route::resource('article', ArticleController::class);
 });

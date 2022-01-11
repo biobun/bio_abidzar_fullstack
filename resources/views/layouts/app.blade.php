@@ -27,9 +27,11 @@
         </style>
     </head>
     <body class="bg-white">
-        @include('layouts.navigation')
-        <div class="container">
-
+        @if (Auth::check())
+            @include('layouts.navigation')
+        @else
+            @include('layouts.guest-navigation')
+        @endif
             <!-- Page Heading -->
             <header>
                 <div class="mt-3 mb-4">
