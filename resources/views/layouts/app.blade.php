@@ -13,16 +13,14 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <body class="bg-white">
+        @include('layouts.navigation')
+        <div class="container">
 
             <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <header>
+                <div class="mt-3 mb-4">
                     {{ $header }}
                 </div>
             </header>
@@ -32,5 +30,9 @@
                 {{ $slot }}
             </main>
         </div>
+        <script src="{{ asset(mix('js/manifest.js')) }}"></script>
+        <script src="{{ asset(mix('js/vendor.js')) }}"></script>
+        <script src="{{ asset(mix('js/app.js')) }}"></script>
+
     </body>
 </html>
