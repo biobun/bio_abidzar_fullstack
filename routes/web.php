@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('guest.home');
+
 Route::get('/list-article', [PublicController::class, 'all'])->name('guest.article.all');
 Route::get('/list-article/{article}', [PublicController::class, 'show'])->name('guest.article.show');
 Route::middleware(['auth'])->group(function(){
@@ -25,3 +26,4 @@ Route::middleware(['auth'])->group(function(){
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/api.php';
