@@ -1,4 +1,21 @@
-window._ = require('lodash');
+import 'bootstrap';
+
+window.$ = window.jQuery = require('jquery');
+window._debounce = require('lodash.debounce');
+
+
+$.ajaxSetup({
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+require('datatables.net-bs5');
+require('datatables.net-buttons');
+require('datatables.net-buttons-bs5');
+
+// window._ = require('lodash');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,9 +23,9 @@ window._ = require('lodash');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+// window.axios = require('axios');
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
