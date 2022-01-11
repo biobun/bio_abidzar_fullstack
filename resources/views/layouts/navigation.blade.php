@@ -10,8 +10,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-responsive-nav-link :href="route('article.index')" :active="request()->routeIs('article.index')">
+                        {{ __('Article') }}
                     </x-responsive-nav-link>
                 </li>
             </ul>

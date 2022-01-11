@@ -6,11 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Storage;
 
 class Article extends Model
 {
+
+    public const STORAGE_PATH = 'public/article';
+
     use HasFactory;
     use HasSlug;
+
+    protected $fillable = [
+        'title',
+        'content',
+        'image',
+    ];
 
     public function getSlugOptions(): SlugOptions
     {
@@ -27,5 +37,10 @@ class Article extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return asset(Storage::url($this->attributes['image']));
     }
 }

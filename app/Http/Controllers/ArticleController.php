@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreArticleRequest;
-use App\Http\Requests\UpdateArticleRequest;
+use App\Http\Requests\ArticleRequest;
+use App\DataTables\ArticlesDataTable;
 use App\Models\Article;
+use Storage;
 
 class ArticleController extends Controller
 {
@@ -13,9 +14,9 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ArticlesDataTable $dataTable)
     {
-        //
+        return $dataTable->render('articles.index');
     }
 
     /**
@@ -23,9 +24,9 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Article $article)
     {
-        //
+        return view('articles.form', compact('article'));
     }
 
     /**
@@ -34,9 +35,19 @@ class ArticleController extends Controller
      * @param  \App\Http\Requests\StoreArticleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreArticleRequest $request)
+    public function store(ArticleRequest $request)
     {
-        //
+        $article = new Article();
+
+        $article->title = $request->title;
+        $article->content = $request->content;
+        $article->image = $request->image->store(Article::STORAGE_PATH);
+
+        $article->save();
+
+        return redirect()
+            ->route('article.index')
+            ->with('alert-success', "Article {$article->title} has been created");
     }
 
     /**
@@ -47,7 +58,14 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        $page = Article::all();
+        return Response::json(
+            array(
+                'status' => 'success',
+                'pages' => $page->toArray()
+            ),
+            200
+        );
     }
 
     /**
@@ -58,7 +76,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //
+        return view('articles.form', compact('article'));
     }
 
     /**
@@ -68,9 +86,20 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request, Article $article)
     {
-        //
+        $oldImage = $article->image;
+
+        $article->title = $request->title;
+        $article->content = $request->content;
+        $article->image = $request->image->store(Article::STORAGE_PATH);
+        $article->update();
+
+        Storage::delete($oldImage);
+
+        return redirect()
+            ->route('article.index')
+            ->with('alert-success', "Article {$article->title} has been updated");
     }
 
     /**
@@ -81,6 +110,14 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        $oldImage = $article->image;
+
+        $article->delete();
+
+        Storage::delete($oldImage);
+
+        return redirect()
+            ->route('article.index')
+            ->with('alert-success', "Article {$article->title} has been deleted");
     }
 }
